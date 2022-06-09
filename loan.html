@@ -1,0 +1,83 @@
+<html>
+<head>
+
+    <link href="loan.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="loan.js"></script>
+
+</head>
+
+
+<body>
+    <div id="container">
+
+        <h2>Amortization Calculator</h2>
+
+        <div id="lease_src"> <!-- lease form -->
+
+            <form name="lease_form">
+
+                <table style="margin:10px;">
+                    <tr>
+                        <td>Sell Price: </td>
+                        <td> <input type= "text" name="price" size="10"/></td>
+                    </tr>
+                    <tr>
+                        <td>Lease Amount: </td>
+                        <td> <input type= "text" name="lease_amt" size="10"/></td>
+                    </tr>
+                    <tr>
+                        <td>Number of Months: </td>
+                        <td><input type="text" name="months" size="10"/></td>
+                    </tr>
+                    <tr>
+                        <td>Annual Interest Rate: <br/> <span style="font-size:80%">(ex. 4.5% = 4.5)</span></td>
+                        <td><input type="text" name="rate" size="10"/></a></td>
+                    </tr>
+                    <tr>
+                        <td>Extra Monthly Payment: </td>
+                        <td><input type="text" name="extra" size="10"/></td>
+                    </tr>
+                    <tr>
+                        <td>Residual: </td>
+                        <td> <input type= "text" name="residual" size="10"/></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="button" onclick="validate()" value="Calculate"/></td>
+                        <td><input type="button" onclick="startover()" value="Start Over"/></td>
+                    </tr>
+                </table>
+
+            </form>
+
+
+
+        </div>
+
+        <div id="lease_info"> <!--lease info-->
+            
+        </div>
+
+        <div id="table_header"> 
+            <table cellpadding="15" border="1">
+                <tr>
+                    <td width="60" align="center"><b>Month</b></td>
+                    <td width="60" align="center"><b>Payment</b></td>
+                    <td width="60" align="center"><b>Principle</b></td>
+                    <td width="60" align="center"><b>Interest</b></td>
+                    <td width="85" align="center"><b>Interest Paid</b></td>
+                    <td width="70" align="center"><b>Balance</b></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="table">
+            
+        </div>
+    </div>
+
+
+
+
+</body>
+</html>

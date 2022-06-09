@@ -1,0 +1,55 @@
+body {
+    text-align: center;
+}
+#container{
+    
+    width: 650px;
+    height: 900px;
+    margin: 0px auto;
+    padding: 10px;
+    background-color: #fff;
+
+    border: 1px solid black;
+
+}
+
+#lease_src{
+
+    float: left;
+    width: 250px;
+    height: 220;
+    margin-bottom: 10px;
+
+}
+
+#lease_info{
+
+    float: right;
+    width: 300px;
+    height: 250px;
+    margin-bottom: 10px;
+
+}
+
+#table_header{
+    box-align: center;
+    clear: both;
+    width: 600px;
+    height: 52px;
+
+}
+
+#table{
+
+    overflow: auto;
+    width: 615px;
+    height: 525px;
+
+    border: 1px solid gray;
+}
+
+table{ 
+    box-align:center; 
+    font-family: sans-serif; 
+    font-size: 13px;
+}

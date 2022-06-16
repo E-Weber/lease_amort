@@ -1,11 +1,10 @@
 function startover() {
-
-    document.lease_form.lease_amt.value="";
+    document.lease_form.price.value="";
+    document.lease_form.down_payment.value="";
     document.lease_form.months.value="";
     document.lease_form.rate.value="";
-    document.lease_form.extra.value="0";
     document.lease_form.residual.value="";
-
+    document.lease_form.early_payoff.value="0";
 
     document.getElementById("lease_info").innerHTML="";
     document.getElementById("table").innerHTML = "";
@@ -14,18 +13,24 @@ function startover() {
 
 function validate(){
 
-    var lease_amt = document.lease_form.lease_amt.value;
+    var price = document.lease_form.price.value;
+    var down_payment = document.lease_form.down_payment.value;
     var months = document.lease_form.months.value;
     var rate = document.lease_form.rate.value;
-    var extra = document.lease_form.extra.value;
     var residual = document.lease_form.residual.value;
+    var early_payoff = document.lease_form.early_payoff.value;
+    
  // isNaN(number()) checks to see if the user entered a float 
                             
-    if (lease_amt <= 0 || isNaN(Number(lease_amt)) ) {
+    if (price <= 0 || isNaN(Number(price)) ) {
         alert("Please enter a valid lease amount.");
-        document.lease_form.lease_amt.value = "";
+        document.lease_form.price.value = "";
     }
-                            
+    
+    else if (down_payment <= 0 || isNaN(Number(down_payment)) ) {
+        alert("Please enter a valid lease amount.");
+        document.lease_form.down_payment.value = "";
+    }
     else if (months <= 0 || parseInt(months) != months ) {
         alert("Please enter a valid number of months.");
         document.lease_form.months.value = "";
@@ -35,43 +40,46 @@ function validate(){
         alert("Please enter a valid interest rate.");
         document.lease_form.rate.value = "";
     }
-                            
-    else if (extra < 0 || isNaN(Number(extra))) {
-        alert("Please enter a valid extra payment.");
-        document.lease_form.extra.value = "0";
-    }
-
-    else if (extra < 0 || isNaN(Number(residual))) {
+    else if (residual < 0 || isNaN(Number(residual))) {
         alert("Please enter a valid residual.");
-        document.lease_form.extra.value = "";
+        document.lease_form.residual.value = "";
     }
-
+ 
+    else if (early_payoff < 0 || isNaN(Number(early_payoff))) {
+        alert("Please enter a valid early_payoff payment.");
+        document.lease_form.early_payoff.value = "0";
+    }
     
     else {
-        calculate(parseFloat(lease_amt), parseInt(months), parseFloat(rate), parseFloat(extra), parseFloat(residual));
+        calculate(parseFloat(price), parseFloat(down_payment), parseInt(months), parseFloat(rate),  parseFloat(residual), parseFloat(early_payoff));
     }
 }
 
 
-function calculate(lease_amt, months, rate, extra, residual) {
+function calculate(price, down_payment, months, rate, residual, early_payoff) {
     
     i = rate/100;
     residual = residual/100;
-    residual_value = lease_amt * residual;
+    
 
+    var lease_amt = price - down_payment;
+    var residual_value = lease_amt * residual;
+    var pmt = (lease_amt*(i/12))/[1 - Math.pow(1 + (i/12),-months)];
+    var toop = (pmt*1.5)+down_payment+595+250;
+    
     // var pmt = (lease_amt*(i/12)*Math.pow((1+i/12), months)) / (Math.pow((1+i/12), months) - 1);
     
     // Payment = Present Value - (Future Value / ( ( 1 + i ) ^n) / [ 1- (1 / (1 +i ) ^ n ) ] / i                    
     // var pmt = lease_amt - [residual_value / Math.pow((1 + (i/12)),months)] / [1 - Math.pow(1/(1 + (i/12)), months )] / i/12;
     // var pmt = (lease_amt*(i/12)*Math.pow((1+(i/12)),months)-residual_value*(i/12))/(Math.pow(1+(i/12),months)-1);
-    var pmt = (lease_amt*(i/12))/[1 - Math.pow(1 + (i/12),-months)]
+    
     var info = "";
 
     info += "<table width='250'>";
-    info += "<tr><td>Lease Amount:</td>";
-    info += "<td align = 'right'>$"+lease_amt+"</td></tr>";
+    info += "<tr><td>Financed Amount:</td>";
+    info += "<td align = 'right'>$"+round(lease_amt, 2)+"</td></tr>";
 
-    info += "<tr><td>Num of Months:</td>";
+    info += "<tr><td>Number of Months:</td>";
     info += "<td align = 'right'>"+months+"</td></tr>";
 
     info += "<tr><td>Interest Rate:</td>";
@@ -80,14 +88,14 @@ function calculate(lease_amt, months, rate, extra, residual) {
     info += "<tr><td>Monthly Payment:</td>";
     info += "<td align = 'right'>$"+round(pmt, 2)+"</td></tr>";
     
-    info += "<tr><td>+Extra:</td>";
-    info += "<td align = 'right'>$"+extra+"</td></tr>";
-
     info += "<tr><td>Residual:</td>";
-    info += "<td align = 'right'>$"+residual_value+"</td></tr>";
+    info += "<td align = 'right'>$"+round(residual_value,2)+"</td></tr>";
 
-    info += "<tr><td>Total Payment:</td>";
-    info += "<td align = 'right'>$"+round(pmt+extra,2)+"</td></tr>";
+    info += "<tr><td>Total Out of Pocket:</td>";
+    info += "<td align = 'right'>$"+round(toop,2)+"</td></tr>";
+
+    info += "<tr><td>+Early Payoff (months):</td>";
+    info += "<td align = 'right'>"+early_payoff+"</td></tr>";
 
     info += "</table>";
 
@@ -110,7 +118,7 @@ function calculate(lease_amt, months, rate, extra, residual) {
     var payment_counter = 1;
     var total_interest = 0;
     
-    pmt = pmt + extra;
+    pmt = pmt + early_payoff;
     
     while(current_balance > 0){
         //create rows
@@ -121,12 +129,15 @@ function calculate(lease_amt, months, rate, extra, residual) {
             pmt = current_balance + towards_interest;
         }
 
+        
+
         towards_balance = pmt - towards_interest;
         total_interest = total_interest + towards_interest;
         current_balance = current_balance - towards_balance;
-        
+
+
         //display row
-        table += "<tr>";
+        table+= "<tr>";
             table += "<td>"+payment_counter+"</td>";
             table += "<td>"+round(pmt,2)+"</td>";
             table += "<td>"+round(towards_balance,2)+"</td>";
@@ -137,15 +148,35 @@ function calculate(lease_amt, months, rate, extra, residual) {
 
         
         payment_counter++;
+        
     }
 
-    
+    while(current_balance == 0){
+
+        if(pmt > current_balance && current_balance == 0){
+            var payment_counter = months + 1
+            var pmt = residual_value;
+            var towards_balance = 0;
+            var towards_interest = 0;
+            var total_interest = 0;
+            var current_balance = residual_value;
+
+        }
+
+        table+= "<tr>";
+        table += "<td>"+payment_counter+"</td>";
+        table += "<td>"+round(pmt,2)+"</td>";
+        table += "<td>"+round(towards_balance,2)+"</td>";
+        table += "<td>"+round(towards_interest,2)+"</td>";
+        table += "<td>"+round(total_interest,2)+"</td>";
+        table += "<td>"+round(current_balance,2)+"</td>";
+    table+= "</tr>";
+
+    }
 
     table += "</table>";
 
     document.getElementById("table").innerHTML = table;
-
-
 
     }
 

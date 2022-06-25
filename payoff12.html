@@ -5,16 +5,16 @@
     <script type="text/javascript" src="loan.js"></script>
 
 </head>
-
-
 <body>
     <div id="container">
+        <div class="home">
+            <a type="button" href="loan.html">Home</a>
+        </div>
+        <h2>12 Month Payoff</h2>
 
-        <h2>Amortization Calculator</h2>
+        <!-- <div id="lease_src"> <-- lease form -->
 
-        <div id="lease_src"> <!-- lease form -->
-
-            <form name="lease_form">
+            <!-- <form name="lease_form">
 
                 <table style="margin:10px;">
                     <tr>
@@ -42,20 +42,48 @@
                         <td><input type="text" name="broker_points" size="10"/></td>
                     </tr>
                     <tr>
-                        <td><input type="button" onclick="validate()" value="Calculate"/></td>
-                        <td><input type="button" onclick="startover()" value="Start Over"/></td>
-                        <td><input type="button" onclick="payoff12()" value="12 Month Payoff"/></td>
+                        <td><input type="button" onclick="payoff12()" value="Calculate Payoff"/></td>
+                        
                     </tr>
                 </table>
 
-            </form>
+            </form> -->
 
 
 
-        </div>
-
-        <div id="lease_info"> <!--lease info-->
+        <!-- </div>  --> 
+        <div id="payoff_info"> <!--lease info-->
             
+            <script>
+                info = "";
+
+                info += "<table width='250'>";
+                info += "<tr><td>Financed Amount:</td>";
+                info += "<td align = 'right'>$"+round(lease_amt, 2)+"</td></tr>";
+            
+                info += "<tr><td>Number of Months:</td>";
+                info += "<td align = 'right'>"+months+"</td></tr>";
+            
+                info += "<tr><td>Interest Rate:</td>";
+                info += "<td align = 'right'>"+rate+"%</td></tr>";
+            
+                info += "<tr><td>Monthly Payment:</td>";
+                info += "<td align = 'right'>$"+round(pmt, 2)+"</td></tr>";
+                
+                info += "<tr><td>Residual:</td>";
+                info += "<td align = 'right'>$"+round(residual_value,2)+"</td></tr>";
+            
+                info += "<tr><td>Total Out of Pocket:</td>";
+                info += "<td align = 'right'>$"+round(toop,2)+"</td></tr>";
+            
+                info += "<tr><td>Broker Commission:</td>";
+                info += "<td align = 'right'>$"+round(commission,2)+"</td></tr>";
+            
+                info += "</table>";
+            
+                info += "<tr><a href='payoff12.html'<td> <input type='button' href='payoff12.html' value='Payoff 12'/></td></a></tr>";
+            
+                document.getElementById("lease_info").innerHTML = info;</script>
         </div>
 
         <div id="table_header"> 

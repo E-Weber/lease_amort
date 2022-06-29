@@ -286,29 +286,34 @@ function payoff12(price, down_payment, months, rate, residual, broker_points){
     
     // pmt = pmt + early_payoff;
     
-    while(payment_counter < 14){
+    
+    while(current_balance > 0){
         //create rows
-        
+
         towards_interest = (i/12)*current_balance //calculates the portion of monthly payment that goes towards interest
         
-        if(payment_counter < 13) {
+        if(pmt > current_balance) {
             pmt = current_balance + towards_interest;
+        }
+
+        if (payment_counter == 14){
+            break
             
         }
 
         principle = pmt - towards_interest;
         total_interest = total_interest + towards_interest;
         current_balance = current_balance - principle;
+        
 
-        if(payment_counter == 13){
-            var payment_counter = 13
-            var pmt = balance + residual_value + towards_interest;
+        if (payment_counter == 13){
+            var pmt = current_balance + residual_value;
             var principle = 0;
             var towards_interest = 0;
             var total_interest = 0;
-            var current_balance = balance + residual_value + towards_interest;
-            continue
+            var current_balance = pmt;
         }
+
 
         //display row
         table+= "<tr>";
@@ -324,24 +329,6 @@ function payoff12(price, down_payment, months, rate, residual, broker_points){
         payment_counter++;
         
     }
-
-    // while(payment_counter == 13){
-
-    //     if(payment_counter == 14){
-    //         continue;
-
-    //     }
-
-    //     table+= "<tr>";
-    //     table += "<td>"+payment_counter+"</td>";
-    //     table += "<td>"+round(pmt,2)+"</td>";
-    //     table += "<td>"+round(principle,2)+"</td>";
-    //     table += "<td>"+round(towards_interest,2)+"</td>";
-    //     table += "<td>"+round(total_interest,2)+"</td>";
-    //     table += "<td>"+round(current_balance,2)+"</td>";
-    // table+= "</tr>";
-
-    // }
 
     table += "</table>";
 
